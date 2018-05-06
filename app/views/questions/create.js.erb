@@ -1,0 +1,24 @@
+<% if @comentario.errors.empty? %>
+ <%if @comentario.comentable_type == "Question"%>
+    // add the row to the table, show alert and hide modal
+    $('.p').append(' <%= j render "coment", comentario: @comentario %>');
+    // el row a su vez es un parchal (ver _row)y con un atriputo que es el producto.
+    // //Logra agregar un elemento sin tener que recargar la clase. El Objeto no viene desde base de datos, pero si la afecta por debajo
+    // $('.alert-success').html("El producto ha sido creado con éxito").show();
+    // //agregamos un alarma al DOM, pues comunicacion es asincronica(NO AFECTA FLASH MESSAGES)
+    // $('#product-modal').modal('hide');
+  <% else %>
+    // add the row to the table, show alert and hide modal
+    $('.<%=@comentario.id%>').append(' <%= j render "coment", comentario: @comentario %>');
+
+    // // el row a su vez es un parchal (ver _row)y con un atriputo que es el producto.
+    // //Logra agregar un elemento sin tener que recargar la clase. El Objeto no viene desde base de datos, pero si la afecta por debajo
+    // $('.alert-success').html("El producto ha sido creado con éxito").show();
+    // //agregamos un alarma al DOM, pues comunicacion es asincronica(NO AFECTA FLASH MESSAGES)
+    // $('#product-modal').modal('hide');
+  <% end %>
+
+<% else %>
+  // show first error
+  // alert('<%= @comentario.errors.full_messages[0] %>');
+<% end %>

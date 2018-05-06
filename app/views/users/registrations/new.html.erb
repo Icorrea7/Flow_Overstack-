@@ -1,0 +1,36 @@
+<head>
+<link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
+</head>
+<div id = "sigUp">
+<h1>SING UP</h1>
+<div class="panel panel-default" >
+
+  <div class="panel-body">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= devise_error_messages! %>
+
+      <div class="field">
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder:"Email" %>
+      </div>
+
+      <div class="field">
+        <% if @minimum_password_length %>
+        <em>(<%= @minimum_password_length %> characters minimum)</em>
+        <% end %><br />
+        <%= f.password_field :password, autocomplete: "off", placeholder:"Contraseña" %>
+      </div>
+
+      <div class="field">
+        <%= f.password_field :password_confirmation, autocomplete: "off", placeholder:"Confirmar contraseña" %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Registrarse", class: "btn btn-primary botonsing"%>
+      </div>
+    <% end %>
+    <p>¿Ya estas registrado? <%= render "users/shared/links" %></p>
+
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,111 @@
+
+<% flash.each do |key, message| %>
+    <div class="alert alert-<%= key %>" role="alert"><p style="text-align:center"><%= message %></p></div>
+<% end %>
+<div class="inner-content">
+  <div id="question_header">
+    <h1><%= @question.title %> </h1>
+  </div>
+  <div class="row">
+    <div class="col-md-1" id="vot-pre">
+        <% if @question.votes.exists?(user: current_user) %>
+          <% @d_vote.each do |d| %>
+            <%= link_to question_vote_path(@question.id,d.id), method: :delete do %>
+            <h2 class="glyphicon glyphicon-thumbs-down d-vote"></h2>
+            <% end %>
+          <% end %>
+        <% else %>
+          <%= link_to question_votes_path(@question.id), method: 'post' do %>
+            <h2 class="text-center glyphicon glyphicon-thumbs-up a-vote"></h2>
+          <% end %>
+        <% end %>
+        <h2 style="margin-top:3px; margin-left:14px"><%= @question.votes.count %><h2>
+      </div>
+
+     <div class="col-sm-10" id="comentario">
+       <div>
+         <p class="descripcion"><%= markdown @question.description%> </p>
+         <!-- <p> Publicado por: <%= @question.user_id%></p> -->
+       </div>
+       <div class="p">
+           <% @comentarios.each do |com|%>
+              <%= render "coment", comentario: com %>
+           <%end%>
+        </div>
+       <div>
+         <%= form_for @comentario, url: question_comentarios_path(@question), remote: true  do | f| %>
+             <div>
+               <%= f.text_area :descripcion, placeholder:"Agregar comentario", class:"coment" %>
+               <%= f.hidden_field  :comentable_id %>
+               <%= f.hidden_field  :comentable_type %>
+             </div>
+             <%= f.submit "Comentar", class: "btn btn-primary botocom"%>
+         <% end %>
+       </div>
+     </div>
+  </div>
+
+  <div class="row" id="vot-que">
+    <h3> <%=@answers.count %> Respuesta(s) </h3>
+    <hr>
+    <% @answers.each do |ans|%>
+    <% if ans.id == nil %>
+    <%else %>
+      <div class="row">
+        <div class="col-md-1" id="vot-pre">
+          <% if ans.votes.exists?(user: current_user) %>
+            <%ans.votes.each do |v| %>
+              <%= link_to question_vote_path(@question.id,v.id), method: :delete do %>
+               <h2 class="glyphicon glyphicon-triangle-top d-vote"  ></h2>
+              <% end %>
+            <% end %>
+          <% else %>
+            <%= link_to answers_votes_path(ans.id), method: 'post' do %>
+                <h2 class="glyphicon glyphicon-triangle-top a-vote"></h2>
+            <% end %>
+          <% end %>
+            <h2  style="margin-top:1px; margin-left:23px"><%= ans.votes.count %><h2>
+        </div>
+           <div class="col-sm-10" id="comentario">
+             <p class="descripcion"><%= markdown ans.description %></p>
+             <div class="answers">
+             <% ans.comentarios.each do |com|%>
+             <div class=" coment <%=com.comentable_id%>">
+              <%= render "coment", comentario: com %>
+            </div>
+             <%end%>
+             </div>
+             <div>
+               <%= form_for @comentario, url: question_comentarios_path(@question), remote: true  do | f| %>
+                   <div>
+                     <%= f.text_area :descripcion, placeholder:"Agregar comentario", class:"coment"%>
+                     <%= f.hidden_field  :comentable_id, :value => ans.id %>
+                     <%= f.hidden_field  :comentable_type, :value => "Answer" %>
+                   </div>
+                   <%= f.submit "Comentar", class: "btn btn-primary botocom"%>
+               <% end %>
+             </div>
+           </div>
+      </div>
+      <hr>
+      <%end%>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form_for @answer, url: question_answers_path(@question)  do | f| %>
+        <div>
+          <h2> Tu Respuesta </h2>
+          <%= f.text_area :description, :class => 'markItUp' %>
+          <%= f.hidden_field  :question_id %>
+        </div>
+        <%= f.submit "Enviar Respuesta", class: " text-center btn btn-primary botores"%>
+    <% end %>
+  </div>
+</div>
+<script type="text/javascript" >
+
+  $(document).ready(function() {
+  $(".markItUp").markItUp(mySettings);
+  });
+</script>
