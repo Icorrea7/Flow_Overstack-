@@ -3,8 +3,14 @@ class AnswersController < ApplicationController
   def create
     @answer = Answer.new(answer_params)
     @answer.user_id = current_user.id
-    @answer.save
-    redirect_to question_path(@answer.question_id)
+    if (@answer.description == "")
+      flash[:danger] = "La Respuesta debe incluir una descripción"
+      redirect_to question_path(@answer.question_id)
+    else
+      @answer.save
+      flash[:success] = "Tu Respuesta ha sido creada"
+      redirect_to question_path(@answer.question_id)
+    end
   end
   def sum
       answer=Answer.find(params[:id])

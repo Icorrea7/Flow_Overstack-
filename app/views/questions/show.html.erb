@@ -32,6 +32,7 @@
               <%= render "coment", comentario: com %>
            <%end%>
         </div>
+      <% if current_user %>
        <div>
          <%= form_for @comentario, url: question_comentarios_path(@question), remote: true  do | f| %>
              <div>
@@ -42,6 +43,7 @@
              <%= f.submit "Comentar", class: "btn btn-primary botocom"%>
          <% end %>
        </div>
+      <% end %>
      </div>
   </div>
 
@@ -75,6 +77,7 @@
             </div>
              <%end%>
              </div>
+            <% if current_user %>
              <div>
                <%= form_for @comentario, url: question_comentarios_path(@question), remote: true  do | f| %>
                    <div>
@@ -85,6 +88,7 @@
                    <%= f.submit "Comentar", class: "btn btn-primary botocom"%>
                <% end %>
              </div>
+            <% end %>
            </div>
       </div>
       <hr>
@@ -93,13 +97,15 @@
   </div>
 
   <div>
-    <%= form_for @answer, url: question_answers_path(@question)  do | f| %>
-        <div>
-          <h2> Tu Respuesta </h2>
-          <%= f.text_area :description, :class => 'markItUp' %>
-          <%= f.hidden_field  :question_id %>
-        </div>
-        <%= f.submit "Enviar Respuesta", class: " text-center btn btn-primary botores"%>
+    <% if current_user %>
+      <%= form_for @answer, url: question_answers_path(@question)  do | f| %>
+          <div>
+            <h2> Tu Respuesta </h2>
+            <%= f.text_area :description, :class => 'markItUp' %>
+            <%= f.hidden_field  :question_id %>
+          </div>
+          <%= f.submit "Enviar Respuesta", class: " text-center btn btn-primary botores"%>
+      <% end %>
     <% end %>
   </div>
 </div>
