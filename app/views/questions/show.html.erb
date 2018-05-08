@@ -10,13 +10,16 @@
     <div class="col-md-1" id="vot-pre">
         <% if @question.votes.exists?(user: current_user) %>
           <% @d_vote.each do |d| %>
+            <h2 class="text-center glyphicon glyphicon-thumbs-up a-vote"></h2>
+            <h2 style="margin-top:1px; margin-left:20px"><%= @question.votes.count %><h2>
             <%= link_to '<h2 class="glyphicon glyphicon-thumbs-down d-vote"></h2>'.html_safe, question_vote_path(@question.id,d.id), method: :delete, data: { disable_with: "Please wait..." }%>
+
           <% end %>
         <% else %>
           <%= link_to '<h2 class="text-center glyphicon glyphicon-thumbs-up a-vote"></h2>'.html_safe, question_votes_path(@question.id), method: 'post', data: { disable_with: "Please wait..." } %>
-
+          <h2 style="margin-top:1px; margin-left:20px"><%= @question.votes.count %><h2>
+          <h2 class=" text-center glyphicon glyphicon-thumbs-down d-vote"></h2>
         <% end %>
-        <h2 style="margin-top:3px; margin-left:14px"><%= @question.votes.count %><h2>
       </div>
 
      <div class="col-sm-10" id="comentario">
@@ -54,16 +57,20 @@
         <div class="col-md-1" id="vot-pre">
           <% if ans.votes.exists?(user: current_user) %>
             <%ans.votes.each do |v| %>
+              <h2 class="glyphicon glyphicon-triangle-top a-vote"></h2>
+              <h2  style="margin-top:0px; margin-left:26px"><%= ans.votes.count %><h2>
               <%= link_to question_vote_path(@question.id,v.id), data: {disable_with: "Please wait..."} ,method: :delete do %>
-               <h2 class="glyphicon glyphicon-triangle-top d-vote"  ></h2>
+               <h2 class="glyphicon glyphicon-triangle-bottom d-vote"  ></h2>
               <% end %>
             <% end %>
           <% else %>
             <%= link_to answers_votes_path(ans.id), data: {disable_with: "Please wait..."}  ,method: 'post' do %>
                 <h2 class="glyphicon glyphicon-triangle-top a-vote"></h2>
             <% end %>
+            <h2  style="margin-top:0px; margin-left:26px"><%= ans.votes.count %><h2>
+            <h2 class="glyphicon glyphicon-triangle-bottom d-vote"  ></h2>
           <% end %>
-            <h2  style="margin-top:1px; margin-left:23px"><%= ans.votes.count %><h2>
+
         </div>
            <div class="col-sm-10" id="comentario">
              <p class="descripcion"><%= markdown ans.description %></p>
