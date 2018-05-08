@@ -10,14 +10,11 @@
     <div class="col-md-1" id="vot-pre">
         <% if @question.votes.exists?(user: current_user) %>
           <% @d_vote.each do |d| %>
-            <%= link_to question_vote_path(@question.id,d.id), method: :delete do %>
-            <h2 class="glyphicon glyphicon-thumbs-down d-vote"></h2>
-            <% end %>
+            <%= link_to '<h2 class="glyphicon glyphicon-thumbs-down d-vote"></h2>'.html_safe, question_vote_path(@question.id,d.id), method: :delete, data: { disable_with: "Please wait..." }%>
           <% end %>
         <% else %>
-          <%= link_to question_votes_path(@question.id), method: 'post' do %>
-            <h2 class="text-center glyphicon glyphicon-thumbs-up a-vote"></h2>
-          <% end %>
+          <%= link_to '<h2 class="text-center glyphicon glyphicon-thumbs-up a-vote"></h2>'.html_safe, question_votes_path(@question.id), method: 'post', data: { disable_with: "Please wait..." } %>
+
         <% end %>
         <h2 style="margin-top:3px; margin-left:14px"><%= @question.votes.count %><h2>
       </div>
@@ -57,12 +54,12 @@
         <div class="col-md-1" id="vot-pre">
           <% if ans.votes.exists?(user: current_user) %>
             <%ans.votes.each do |v| %>
-              <%= link_to question_vote_path(@question.id,v.id), method: :delete do %>
+              <%= link_to question_vote_path(@question.id,v.id), data: {disable_with: "Please wait..."} ,method: :delete do %>
                <h2 class="glyphicon glyphicon-triangle-top d-vote"  ></h2>
               <% end %>
             <% end %>
           <% else %>
-            <%= link_to answers_votes_path(ans.id), method: 'post' do %>
+            <%= link_to answers_votes_path(ans.id), data: {disable_with: "Please wait..."}  ,method: 'post' do %>
                 <h2 class="glyphicon glyphicon-triangle-top a-vote"></h2>
             <% end %>
           <% end %>
@@ -72,14 +69,15 @@
              <p class="descripcion"><%= markdown ans.description %></p>
              <div class="answers">
              <% ans.comentarios.each do |com|%>
-             <div class=" coment <%=com.comentable_id%>">
-              <%= render "coment", comentario: com %>
+             <div class=" coment ">
+               <hr>
+               <%=com.descripcion%>
             </div>
              <%end%>
              </div>
             <% if current_user %>
              <div>
-               <%= form_for @comentario, url: question_comentarios_path(@question), remote: true  do | f| %>
+               <%= form_for @comentario, url: question_comentarios_path(@question) do | f| %>
                    <div>
                      <%= f.text_area :descripcion, placeholder:"Agregar comentario", class:"coment"%>
                      <%= f.hidden_field  :comentable_id, :value => ans.id %>

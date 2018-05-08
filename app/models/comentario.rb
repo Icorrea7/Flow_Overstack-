@@ -12,6 +12,7 @@
 #
 
 class Comentario < ApplicationRecord
+  validates :descripcion, presence: true
   belongs_to :user
   belongs_to :comentable, polymorphic: true
 end

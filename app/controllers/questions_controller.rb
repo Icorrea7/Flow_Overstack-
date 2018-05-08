@@ -14,13 +14,12 @@ class QuestionsController < ApplicationController
   def create
     @question = Question.new(question_params)
     @question.user_id = current_user.id
-    if (@question.title == "")||(@question.description == "")
-      flash[:danger] = "La pregunta debe incluir un titulo y una descripción"
-      redirect_to new_question_path
-    else
-      @question.save
+    if @question.save
       flash[:success] = "Tu pregunta ha sido creada"
       redirect_to question_path(@question)
+    else
+      flash[:danger] = "La pregunta debe incluir un titulo y una descripción"
+      redirect_to new_question_path
     end
   end
 
