@@ -35,7 +35,7 @@ class QuestionsController < ApplicationController
 
   def sum
       question=Question.find(params[:id])
-			question.votes.create(user_id: current_user.id)
+			question.votes.create(user_id: current_user.id, votable_type: "Question", votable_id: question )
 			redirect_to question_path
   end
 
